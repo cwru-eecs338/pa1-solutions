@@ -1,0 +1,16 @@
+1) The memory of the parent process is copied when fork is called to create
+   the child. Therefore, the counter variable is a copy of the parent's
+   counter variable.
+2) Sleep simply pauses a process for a specified amount of time. It cannot
+   actually synchronize processes. Linux/Unix (and Windows) typically give no
+   guarantee that a process is actually paused for the specified amount of
+   time, (eg. they could be paused longer).
+3) Fflush clears the output buffer forcing everything in it to be written to the
+   associated file/device. Without the calls to flush, you (the programmer) have
+   no control when the buffer is actually emptied (causing inconsistent and
+   confusing output). Fflush is not for preventing "corruption" or
+   "interference" or "overflow". Nor will not using it cause the buffer /never/
+   to be emptied.  It will eventually be emptied just not on your timeline.
+   I should note one caveat: If you use _exit instead of exit the buffer may
+   never be flushed see the man page. Finally, if you don't fflush before fork()
+   the child processes will recieve whatever unwritten data the parent had.
